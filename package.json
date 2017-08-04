@@ -1,0 +1,23 @@
+{
+  "name": "platzipic",
+  "version": "1.0.0",
+  "description": "Aplicativo hecho con Electron que funciona como visor de imágenes",
+  "main": "index.js",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development electron src/index.js",
+    "lint": "standard",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Julio Sarango",
+  "license": "MIT",
+  "dependencies": {
+    "cross-env": "^5.0.2",
+    "electron-compile": "^6.4.1",
+    "electron-debug": "^1.3.0"
+  },
+  "devDependencies": {
+    "devtron": "^1.4.0",
+    "electron-prebuilt-compile": "^1.6.11",
+    "standard": "^10.0.2"
+  }
+}

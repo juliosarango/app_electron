@@ -62,18 +62,17 @@
               <header class="toolbar toolbar-header image-toolbar">
                 <div class="toolbar-actions">
                   <div class="btn-group">
-                    <button class="btn btn-default">
+                    <button id="open-directory" class="btn btn-default">
                       <span class="icon icon-folder icon-text"></span>
                       Abrir ubicación
                     </button>
                   </div>
-                  <button class="btn btn-default pull-right">
+                  <button id="save-button" class="btn btn-default pull-right">
                     <span class="icon icon-download icon-text"></span>
                     Guardar
                   </button>
                   <select id="filters" class="pull-right">
-                    <option value="none">Ninguno</option>
-                    <option value="normal">Normal</option>
+                    <option value="normal" selected>Normal</option>
                     <option value="juno">Juno</option>
                     <option value="amaro">Amaro</option>
                     <option value="sierra">Sierra</option>
@@ -96,7 +95,7 @@
                     <option value="helena">helena</option>
 
                   </select>
-                  <label class="pull-right filter-label">Filtros</label>
+                  <label class="pull-right filter-label">Filtros: </label>
                 </div>
               </header>
               <div class="image-container">

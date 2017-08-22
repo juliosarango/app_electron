@@ -9,6 +9,7 @@ Desde este objeto podemos iniciar, cerrar el aplicativo.
 // iniciamos los objetos app y BrowserWindow
 import { app, BrowserWindow,ipcMain, dialog } from 'electron'
 import devtools from './devtools'
+import setupErrors from './handle-errors'
 import isImage from 'is-image'
 import filesize from 'filesize'
 import fs from 'fs'
@@ -44,10 +45,15 @@ app.on('ready', () => {
     show: false
   })
 
+  // despues de crear la ventana principal de la app, controlamos los errores
+  setupErrors(win)
+
+  /*
   win.on('move', () => {
     const position = win.getPosition()
     //  console.log(`La posición actual es: ${position}`)
   })
+  /*
 
   /**
   Podemos cargar 2 tipos de contenido: local y remopo

@@ -16,7 +16,7 @@ function saveImage (fileName, callback) {
   // controlamos que la imagen haya sido modificada
   // en caso de que no haya sido modificada, simplemente copiamos la imagen con el modulo fs.extra de npm
   if (fileSrc.indexOf(';base64,') !== -1) {
-    
+
     fileSrc = fileSrc.replace(/^data:([A-Za-z-+/]+);base64,/, '')
     fs.writeFile(fileName, fileSrc, 'base64', callback)
   } else {

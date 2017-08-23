@@ -7,10 +7,12 @@ Desde este objeto podemos iniciar, cerrar el aplicativo.
 */
 
 // iniciamos los objetos app y BrowserWindow
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, Tray } from 'electron'
 import devtools from './devtools'
 import setupErrors from './handle-errors'
 import setMainIpc from './ipcMainEvents'
+import os from 'os'
+import path from 'path'
 
 /*
 solo en el caso en que estemos en el ambiente de desarrollo
@@ -21,7 +23,9 @@ if (process.env.NODE_ENV === 'development') {
   devtools()
 }
 
-let win
+global.win // eslint-disable-line
+global.tray // eslint-disable-line
+
 //  ver las propiedades de app
 //  console.dir(app);
 
@@ -33,7 +37,7 @@ cargar todo contenido visualmente del aplicativo de escritorio
 //  ejecutando órdenes cuando la aplicación está lista.
 app.on('ready', () => {
   //  instanciando una ventana
-  win = new BrowserWindow({
+  global.win = new BrowserWindow({
     width: 800,
     height: 600,
     title: 'Hola mundo!',
@@ -43,10 +47,10 @@ app.on('ready', () => {
   })
 
   // despues de crear la ventana principal de la app, controlamos los errores
-  setupErrors(win)
+  setupErrors(global.win)
 
   // llamamos a los eventos desde setMainIpc
-  setMainIpc(win)
+  setMainIpc(global.win)
 
   /*
   win.on('move', () => {
@@ -60,15 +64,30 @@ app.on('ready', () => {
   Local: La carga es inmediata
   Remoto: La carga dependerá de factores como: red, velocidad de internet.
   */
-  win.once('ready-to-show', () => {
-    win.show()
+  global.win.once('ready-to-show', () => {
+    global.win.show()
   })
 
+  //cargamos el ícono, en linux hay q revisar ya que genera inconvenientes
+  // let icon
+  // if (os.platform() === 'win32') {
+  //   icon = path.join(__dirname, 'assets','icons','try-icon.ico')
+  // } else {
+  //   icon = path.join(__dirname, 'assets','icons','try-icon.png')
+  // }
+  //
+  // global.tray = new Tray(icon)
+  // global.tray.setToolTip('Platzipics')
+  // global.tray.on('click', () => {
+  //   // mostramos u ocultamos la ventana al hacer click
+  //   global.win.isVisible() ? global.win.hide() : global.win.show()
+  // })
+
   //  win.loadURL('http://devdocs.io/');
-  win.loadURL(`file://${__dirname}/renderer/index.html`)
+  global.win.loadURL(`file://${__dirname}/renderer/index.html`)
 
   //  detectamos el cierre de la ventana
-  win.on('closed', () => {
+  global.win.on('closed', () => {
     win = null
     app.quit()
   })

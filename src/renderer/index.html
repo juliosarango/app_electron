@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../assets/css/main.css">
     <script type="text/javascript" src="lib/filterous2-2.0.0.min.js">
     </script>
-    <script type="text/javascript" src="frontend.js">
+    <script type="text/javascript" src="main-window/frontend.js">
     </script>
   </head>
   <body>
@@ -20,41 +20,7 @@
               <li class="list-group-header">
                 <input id="search-box" class="form-control" type="text" placeholder="Busca una imagen">
               </li>
-              <li class="list-group-item selected">
-                <img class="media-object pull-left" src="../assets/img/1.jpg" width="32" height="32">
-                <div class="media-body">
-                  <strong>1.png</strong>
-                  <p>2MB</p>
-                </div>
-              </li>
-              <li class="list-group-item">
-                <img class="media-object pull-left" src="../assets/img/2.jpg" width="32" height="32">
-                <div class="media-body">
-                  <strong>2.png</strong>
-                  <p>2MB</p>
-                </div>
-              </li>
-              <li class="list-group-item">
-                <img class="media-object pull-left" src="../assets/img/3.jpg" width="32" height="32">
-                <div class="media-body">
-                  <strong>3.png</strong>
-                  <p>2MB</p>
-                </div>
-              </li>
-              <li class="list-group-item">
-                <img class="media-object pull-left" src="../assets/img/4.jpg" width="32" height="32">
-                <div class="media-body">
-                  <strong>4.png</strong>
-                  <p>2MB</p>
-                </div>
-              </li>
-              <li class="list-group-item">
-                <img class="media-object pull-left" src="../assets/img/5.jpg" width="32" height="32">
-                <div class="media-body">
-                  <strong>5.png</strong>
-                  <p>2MB</p>
-                </div>
-              </li>
+
             </ul>
           </div>
           <div class="pane">
@@ -67,6 +33,16 @@
                       Abrir ubicación
                     </button>
                   </div>
+                  <div class="btn-group">
+                    <button id="open-preferences" class="btn btn-default">
+                      <span class="icon icon-cog"></span>
+                    </button>
+
+                    <button id="print-button" class="btn btn-default">
+                      <span class="icon icon-print"></span>
+                    </button>
+                  </div>
+
                   <button id="save-button" class="btn btn-default pull-right">
                     <span class="icon icon-download icon-text"></span>
                     Guardar
@@ -99,7 +75,7 @@
                 </div>
               </header>
               <div class="image-container">
-                <img id='image-displayed' src="../assets/img/1.jpg" data-original="../assets/img/1.jpg" alt="">
+                <img id='image-displayed' src="" data-original="" alt="">
 
               </div>
 
@@ -108,7 +84,7 @@
         </div>
       </div>
       <footer class="toolbar toolbar-footer">
-        <h1 class="title">Footer</h1>
+        <h1 id="directory" class="title"></h1>
       </footer>
     </div>
 

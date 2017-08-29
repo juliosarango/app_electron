@@ -11,6 +11,7 @@
   "author": "Julio Sarango",
   "license": "MIT",
   "dependencies": {
+    "cloudup-client": "^0.3.2",
     "cross-env": "^5.0.2",
     "electron-compile": "^6.4.1",
     "electron-debug": "^1.3.0",

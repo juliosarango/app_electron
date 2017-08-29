@@ -4,12 +4,15 @@ los recursos nativos de la maquina, y el otro proceso de Electron es el procesos
 de renderizado (rendered process), los dos procesos corren en dos hilos diferentes.
 */
 
-import { ipcRenderer, remote } from 'electron'
+import { ipcRenderer, remote, clipboard } from 'electron'
 import settings from 'electron-settings'
 import { addImagesEvents, selectFirstImage, clearImages, loadImages} from './images-ui'
 import { saveImage } from './filters'
+import Cloudup from 'cloudup-client'
 import path from 'path'
 import os from 'os'
+import crypto from 'crypto'
+
 
 function setIpc () {
 
@@ -35,7 +38,9 @@ function setIpc () {
       if (err) {
         return showDialog('error','Platzipics', err.message)
       }
-    showDialog('info','Platzipics', 'Imagen guardada correctamente.')
+
+      document.getElementById('image-displayed').dataset.filtered = file
+      showDialog('info','Platzipics', 'Imagen guardada correctamente.')
     })
   })
 }
@@ -93,9 +98,81 @@ function saveFile () {
   ipcRenderer.send('open-save-dialog',ext)
 }
 
+function uploadImage () {
+  //obtenemos la imagen
+
+  let imageNode = document.getElementById('image-displayed')
+  let image
+
+  // si la imagen tiene filtros, sacamos la informacion del dataset que se
+  // agrego al momento de guardar la imagen, caso contrario elegimos el src original
+  if (imageNode.dataset.filtered) {
+    image = imageNode.dataset.filtered
+  } else {
+    image = imageNode.src
+  }
+
+  // reemplazamos el protocolo file x vacio
+  image = image.replace('file://', '')
+  console.log(image)
+  //extraemos el nombre
+  let fileName = path.basename(image)
+  console.log(fileName)
+
+  if (settings.has('cloudup.user') && settings.has('cloudup.passwd')) {
+    const decipher = crypto.createDecipher('aes192','Platzipics')
+    let decrypted = decipher.update(settings.get('cloudup.passwd'),'hex','utf8')
+    decrypted += decipher.final('utf8')
+
+    console.log(decrypted)
+
+    const client = Cloudup({
+      user: settings.get('cloudup.user'),
+      pass: decrypted
+    });
+
+    const stream = client.stream({
+      title: `Platzipics-${fileName}`
+    })
+
+    stream.file(image)
+          .save((err) => {
+            if (err) {
+              console.log(err)
+              showDialog('error', 'Platzipics', 'Verifique su conexion y/o sus credenciales de cloudup')
+            } else {
+              clipboard.writeText(stream.url)
+              showDialog('info', 'Platzipics', `Imagen guardada correctamente - ${stream.url}, el enlace se copio al portapapeles`)
+            }
+          })
+  } else {
+    showDialog('error', 'Platzipics', 'Por favor complete las preferencias de cloudup')
+  }
+}
+//  usar el clipboard, el clipboard puede trabajar con diferente tipo de informacion.
+
+function pasteImage () {
+  const image = clipboard.readImage()
+
+  //  devuelve el data de la imagen en base64
+  const data = image.toDataURL()
+
+  //  preguntamos si la imagen es valida, data esta en base64
+  if (data.indexOf('data:image/png;base64') !== -1 && !image.isEmpty()) {
+    let mainImage = document.getElementById('image-displayed')
+    mainImage.src = data
+    mainImage.dataset.original = data
+  } else {
+    showDialog('error', 'Platzipics', 'No hay una imagen valida en el portapapeles')
+  }
+
+}
+
 module.exports = {
   setIpc: setIpc,
   openDirectory: openDirectory,
   saveFile: saveFile,
-  openPreferences
+  openPreferences,
+  uploadImage: uploadImage,
+  pasteImage: pasteImage
 }

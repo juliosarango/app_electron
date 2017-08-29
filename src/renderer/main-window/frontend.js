@@ -1,4 +1,4 @@
-import { setIpc, openDirectory, saveFile, openPreferences } from './main-window/ipcRendererEvents'
+import { setIpc, openDirectory, saveFile, openPreferences,uploadImage, pasteImage } from './main-window/ipcRendererEvents'
 import { addImagesEvents, searchImagesEvent, selectEvent, print} from './main-window/images-ui'
 
 window.addEventListener('load', () => {
@@ -10,7 +10,8 @@ window.addEventListener('load', () => {
   buttonEvent('save-button', saveFile)
   buttonEvent('open-preferences', openPreferences)
   buttonEvent('print-button', print)
-
+  buttonEvent('upload-button', uploadImage)
+  buttonEvent('paste-button', pasteImage)
 })
 
 function buttonEvent (id, func) {

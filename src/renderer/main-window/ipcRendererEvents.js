@@ -114,18 +114,16 @@ function uploadImage () {
 
   // reemplazamos el protocolo file x vacio
   image = image.replace('file://', '')
-  console.log(image)
   //extraemos el nombre
   let fileName = path.basename(image)
-  console.log(fileName)
 
   if (settings.has('cloudup.user') && settings.has('cloudup.passwd')) {
+
+    document.getElementById('overlay').classList.toggle('hidden')
     const decipher = crypto.createDecipher('aes192','Platzipics')
     let decrypted = decipher.update(settings.get('cloudup.passwd'),'hex','utf8')
     decrypted += decipher.final('utf8')
-
     console.log(decrypted)
-
     const client = Cloudup({
       user: settings.get('cloudup.user'),
       pass: decrypted
@@ -137,9 +135,9 @@ function uploadImage () {
 
     stream.file(image)
           .save((err) => {
-            if (err) {
-              console.log(err)
-              showDialog('error', 'Platzipics', 'Verifique su conexion y/o sus credenciales de cloudup')
+            document.getElementById('overlay').classList.toggle('hidden')
+            if (err) {              
+              showDialog('error', 'Platzipics', `Verifique su conexion y/o sus credenciales de cloudup`)
             } else {
               clipboard.writeText(stream.url)
               showDialog('info', 'Platzipics', `Imagen guardada correctamente - ${stream.url}, el enlace se copio al portapapeles`)
